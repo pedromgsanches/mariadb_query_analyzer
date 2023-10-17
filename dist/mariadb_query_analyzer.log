@@ -1,0 +1,36 @@
+INFO:root:Session Start: 17/10/2023 15:23:06
+ERROR:root:2005 (HY000): Unknown MySQL server host '"127.0.0.1"' (11001)
+INFO:root:Query Start: 17/10/2023 15:23:06
+INFO:root:Query_File: query1.sql
+INFO:root:Session Start: 17/10/2023 15:24:58
+ERROR:root:2005 (HY000): Unknown MySQL server host '"127.0.0.1"' (11001)
+INFO:root:Query Start: 17/10/2023 15:24:58
+INFO:root:Query_File: query1.sql
+INFO:root:Session Start: 17/10/2023 15:28:46
+ERROR:root:2005 (HY000): Unknown MySQL server host '"127.0.0.1"' (11001)
+INFO:root:Query Start: 17/10/2023 15:28:46
+INFO:root:Query_File: query1.sql
+INFO:root:Session Start: 17/10/2023 15:29:10
+ERROR:root:1045 (28000): Access denied for user '"super"'@'localhost' (using password: YES)
+INFO:root:Query Start: 17/10/2023 15:29:10
+INFO:root:Query_File: query1.sql
+INFO:root:Session Start: 17/10/2023 15:29:32
+INFO:root:DB Connection is OK
+INFO:root:Query Start: 17/10/2023 15:29:32
+INFO:root:Query_File: query1.sql
+INFO:root:-- Current Run: 5
+INFO:root:-- Current Run: 4
+INFO:root:-- Current Run: 3
+INFO:root:-- Current Run: 2
+INFO:root:-- Current Run: 1
+INFO:root:Bye... 17/10/2023 15:29:55
+INFO:root:Session Start: 17/10/2023 15:30:16
+INFO:root:DB Connection is OK
+INFO:root:Query Start: 17/10/2023 15:30:16
+INFO:root:Query_File: query1.sql
+INFO:root:-- Current Run: 5
+INFO:root:-- Current Run: 4
+INFO:root:-- Current Run: 3
+INFO:root:-- Current Run: 2
+INFO:root:-- Current Run: 1
+INFO:root:Bye... 17/10/2023 15:30:39

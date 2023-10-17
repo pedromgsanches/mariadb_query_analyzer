@@ -3,20 +3,19 @@ from mysql.connector import Error
 from tabulate import tabulate
 import os, time, logging
 from datetime import datetime
-import connection_info
+import configloader
 
 ## Set vars
-dbhost = connection_info.dbhost
-dbport = connection_info.dbport
-dbuser = connection_info.dbuser
-dbpwd = connection_info.dbpwd
-dbdatabase = connection_info.dbdatabase
-testruns = connection_info.testruns
+dbhost = configloader.dbhost
+dbport = configloader.dbport
+dbuser = configloader.dbuser
+dbpwd = configloader.dbpwd
+dbdatabase = configloader.dbdatabase
+testruns = configloader.testruns
+
+runtimedirs=['sql','output']
 directory_path='./sql'
 file_list = os.listdir(directory_path)
-
-logging.basicConfig(level = logging.INFO, filename = 'mariadb_query_analyzer.log', filemode = 'a')
-
 
 ## Functions
 def calc_values(mylist):
@@ -26,11 +25,21 @@ def calc_values(mylist):
     returnlist.append(min(mylist))
     return returnlist
 
+def create_dir(dirname):
+    dirpath = os.path.join('./', dirname)
+    try:
+        os.mkdir(dirpath)         
+    except OSError as e:
+        logging.error(f"{e}")
 
+logging.basicConfig(level = logging.INFO, filename = 'MariadbSQLAnalyzer.log', filemode = 'a')
 
 # Start
 logging.info(f'Session Start: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
-    
+
+# Create runtime dirs
+for dirname in runtimedirs:
+    create_dir(dirname) 
 
 ## Test DB Connection
 try:
@@ -44,23 +53,18 @@ except Error as e:
 ## Start job
 for file_name in file_list:
     file_path = os.path.join(directory_path, file_name)
-    
     if os.path.isfile(file_path):
         with open(file_path, 'r') as sqlfile:
-            output = open(file_name+'_log.log', "a")
-
+            output = open('./output/'+file_name+'.log', "a")
             # Start
             output.write("#############################################################################################################################\n")
             output.write("Query Start: "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+"\n")
             logging.info(f'Query Start: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
-
             # Query file Info
             file_contents = sqlfile.read()
             output.write(f"Query_File: {file_name}\n")
             logging.info(f"Query_File: {file_name}")
-
             query = file_contents
-
             # Host Info
             iquery = 'select @@hostname,version()'
             icursor = connection.cursor()
@@ -69,13 +73,12 @@ for file_name in file_list:
             for row in result: 
                 output.write('Host_Info: '+str(row)+"\n")
             output.write('Test_Runs: '+str(testruns)+"\n")
-
             # Execute Query
             cursor = connection.cursor()
             execlist=[]
             rocolist=[]
             try:
-                currrun=testruns
+                currrun=int(testruns)
                 while currrun>0:
                     logging.info(f"-- Current Run: {currrun}")
                     currrun=currrun-1
@@ -87,12 +90,12 @@ for file_name in file_list:
 
                 rowinfo = calc_values(rocolist)
                 output.write(f"Avg_Rows: {rowinfo[0]:.0f} | Max_Rows: {rowinfo[1]} | Min_Rows: {rowinfo[2]} \n")
+
                 execinfo = calc_values(execlist)
                 output.write(f"Avg Exec Time: {execinfo[0]:.6f} | Max Exec Time: {execinfo[1]:.6f} | Min Exec Time: {execinfo[2]:.6f} \n")
 
                 cursor.execute(f"EXPLAIN {query}")
                 execution_plan = cursor.fetchall()
-
 
                 rowcount = len(cursor.fetchall())
                 query_time = end_time - start_time
@@ -107,12 +110,9 @@ for file_name in file_list:
                 output.write(f"Error: {e}\n")
                 logging.error(f"{e}")
 
-
             output.close()
             cursor.close()
 
-logging.info(f'Bye... {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
-
-            
-
 connection.close()
+
+logging.info(f'Bye... {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')

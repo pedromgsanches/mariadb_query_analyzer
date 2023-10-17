@@ -1,0 +1,17 @@
+INFO:root:Session Start: 17/10/2023 15:35:07
+INFO:root:DB Connection is OK
+INFO:root:Session Start: 17/10/2023 15:38:21
+INFO:root:DB Connection is OK
+INFO:root:Session Start: 17/10/2023 15:44:34
+INFO:root:DB Connection is OK
+INFO:root:Session Start: 17/10/2023 15:48:09
+INFO:root:DB Connection is OK
+ERROR:root:[WinError 183] Cannot create a file when that file already exists: './sql'
+INFO:root:Query Start: 17/10/2023 15:48:09
+INFO:root:Query_File: query1.sql
+INFO:root:-- Current Run: 5
+INFO:root:-- Current Run: 4
+INFO:root:-- Current Run: 3
+INFO:root:-- Current Run: 2
+INFO:root:-- Current Run: 1
+INFO:root:Bye... 17/10/2023 15:48:29
