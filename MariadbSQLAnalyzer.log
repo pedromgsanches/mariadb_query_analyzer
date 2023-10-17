@@ -1,14 +1,11 @@
-INFO:root:Session Start: 17/10/2023 15:45:42
-INFO:root:DB Connection is OK
-INFO:root:Session Start: 17/10/2023 15:46:34
-INFO:root:DB Connection is OK
-ERROR:root:[WinError 183] Cannot create a file when that file already exists: './sql'
-ERROR:root:[WinError 183] Cannot create a file when that file already exists: './output'
-INFO:root:Query Start: 17/10/2023 15:46:34
+INFO:root:Session Start: 17/10/2023 16:20:12
+ERROR:root:[Errno 17] File exists: './sql'
+ERROR:root:2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (111)
+INFO:root:Query Start: 17/10/2023 16:20:12
 INFO:root:Query_File: query1.sql
-INFO:root:-- Current Run: 5
-INFO:root:-- Current Run: 4
-INFO:root:-- Current Run: 3
-INFO:root:-- Current Run: 2
-INFO:root:-- Current Run: 1
-INFO:root:Bye... 17/10/2023 15:46:55
+INFO:root:Session Start: 17/10/2023 16:23:19
+ERROR:root:[Errno 17] File exists: './sql'
+ERROR:root:[Errno 17] File exists: './output'
+ERROR:root:2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (111)
+INFO:root:Query Start: 17/10/2023 16:23:19
+INFO:root:Query_File: query1.sql
