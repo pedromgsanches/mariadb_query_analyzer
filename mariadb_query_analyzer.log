@@ -1,10 +1,20 @@
-INFO:root:Session DateTime: 17/10/2023 14:05:01
+INFO:root:Session DateTime: 17/10/2023 14:41:37
 INFO:root:DB Connection is OK
-INFO:root:Query Start: 17/10/2023 14:05:01
+INFO:root:Query Start: 17/10/2023 14:41:37
 INFO:root:Query_File: query1.sql
 INFO:root:-- Current Run: 5
 INFO:root:-- Current Run: 4
 INFO:root:-- Current Run: 3
 INFO:root:-- Current Run: 2
 INFO:root:-- Current Run: 1
-INFO:root:Bye... 17/10/2023 14:05:21
+INFO:root:Bye... 17/10/2023 14:41:56
+INFO:root:Session DateTime: 17/10/2023 14:42:32
+INFO:root:DB Connection is OK
+INFO:root:Query Start: 17/10/2023 14:42:32
+INFO:root:Query_File: query1.sql
+INFO:root:-- Current Run: 5
+INFO:root:-- Current Run: 4
+INFO:root:-- Current Run: 3
+INFO:root:-- Current Run: 2
+INFO:root:-- Current Run: 1
+INFO:root:Bye... 17/10/2023 14:42:52

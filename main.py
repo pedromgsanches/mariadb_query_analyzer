@@ -15,7 +15,7 @@ testruns = connection_info.testruns
 directory_path='./sql'
 file_list = os.listdir(directory_path)
 
-logging.basicConfig(level = logging.INFO, filename = 'mariadb_query_analyzer.log', filemode = 'w')
+logging.basicConfig(level = logging.INFO, filename = 'mariadb_query_analyzer.log', filemode = 'a')
 
 
 ## Functions
@@ -29,7 +29,7 @@ def calc_values(mylist):
 
 
 # Start
-logging.info(f'Session DateTime: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
+logging.info(f'Session Start: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
     
 
 ## Test DB Connection
