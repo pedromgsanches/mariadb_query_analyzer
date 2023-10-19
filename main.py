@@ -1,7 +1,7 @@
 import mysql
 from mysql.connector import Error
 from tabulate import tabulate
-import os, time, logging
+import sys,os, time, logging
 from datetime import datetime
 import configloader
 
@@ -49,6 +49,7 @@ try:
     logging.info("DB Connection is OK")
 except Error as e:
     logging.error(f"{e}")
+    sys.exit()
 
 ## Start job
 for file_name in file_list:
@@ -94,7 +95,7 @@ for file_name in file_list:
                 execinfo = calc_values(execlist)
                 output.write(f"Avg Exec Time: {execinfo[0]:.6f} | Max Exec Time: {execinfo[1]:.6f} | Min Exec Time: {execinfo[2]:.6f} \n")
 
-                cursor.execute(f"EXPLAIN {query}")
+                cursor.execute(f"ANALYZE FORMAT=JSON {query}")
                 execution_plan = cursor.fetchall()
 
                 rowcount = len(cursor.fetchall())
@@ -109,6 +110,7 @@ for file_name in file_list:
             except Error as e:
                 output.write(f"Error: {e}\n")
                 logging.error(f"{e}")
+                sys.exit()
 
             output.close()
             cursor.close()
