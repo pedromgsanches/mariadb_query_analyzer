@@ -3,19 +3,63 @@ from mysql.connector import Error
 from tabulate import tabulate
 import sys,os, time, logging
 from datetime import datetime
-import configloader
+#import configloader
+import configparser
 
+# Configure Logging
+logging.basicConfig(level = logging.INFO, filename = 'MariadbSQLAnalyzer.log', filemode = 'a')
+
+## Load configurations
+try:
+    conffile=sys.argv[1]
+    sqlpath=sys.argv[2]
+except KeyError as e:
+    print(f"No arguments given 1-config.ini 2-sqlpath")
+    print(f"{e}")
+
+if conffile:
+    print(f"ConfigFile = {conffile}")
+    logging.info(f"ConfigFile = {conffile}")    
+else:
+    conffile='config.ini'
+    print(f"ConfigFile = {conffile}")
+    logging.info(f"ConfigFile = {conffile}")
+
+if sqlpath:
+    print(f"SQL Path = {sqlpath}")
+    logging.info(f"SQL Path = {sqlpath}")
+else:
+    sqlpath='./sql'
+    print(f"SQL Path = {sqlpath}")
+    logging.info(f"SQL Path = {sqlpath}")
+
+
+# Config Parser
+config = configparser.ConfigParser()
+config.read(conffile)
+
+try:
+    dbhost = str(config['mariadb']['host'])
+    dbport = config['mariadb']['port']
+    dbuser = config['mariadb']['user']
+    dbpwd = config['mariadb']['password']
+    dbdatabase = config['mariadb']['database']
+    testruns = config['execution']['testruns']
+except KeyError as e:
+    logging.error(f"Error loading config file: {e}")
+    sys.exit()
+    
 ## Set vars
-dbhost = configloader.dbhost
-dbport = configloader.dbport
-dbuser = configloader.dbuser
-dbpwd = configloader.dbpwd
-dbdatabase = configloader.dbdatabase
-testruns = configloader.testruns
+#dbhost = configloader.dbhost
+#dbport = configloader.dbport
+#dbuser = configloader.dbuser
+#dbpwd = configloader.dbpwd
+#dbdatabase = configloader.dbdatabase
+#testruns = configloader.testruns
 
-runtimedirs=['sql','output']
-directory_path='./sql'
-file_list = os.listdir(directory_path)
+runtimedirs=[sqlpath,f"output/{sqlpath}"]
+#directory_path=sqlpath
+file_list = os.listdir(sqlpath)
 
 ## Functions
 def calc_values(mylist):
@@ -32,7 +76,6 @@ def create_dir(dirname):
     except OSError as e:
         logging.error(f"{e}")
 
-logging.basicConfig(level = logging.INFO, filename = 'MariadbSQLAnalyzer.log', filemode = 'a')
 
 # Start
 logging.info(f'Session Start: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
@@ -53,7 +96,7 @@ except Error as e:
 
 ## Start job
 for file_name in file_list:
-    file_path = os.path.join(directory_path, file_name)
+    file_path = os.path.join(sqlpath, file_name)
     if os.path.isfile(file_path):
         with open(file_path, 'r') as sqlfile:
             output = open('./output/'+file_name+'.log', "a")
