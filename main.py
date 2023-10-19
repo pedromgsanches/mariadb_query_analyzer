@@ -13,9 +13,11 @@ logging.basicConfig(level = logging.INFO, filename = 'MariadbSQLAnalyzer.log', f
 try:
     conffile=sys.argv[1]
     sqlpath=sys.argv[2]
-except KeyError as e:
+except IndexError as e:
     print(f"No arguments given 1-config.ini 2-sqlpath")
     print(f"{e}")
+    conffile=None
+    sqlpath=None
 
 if conffile:
     print(f"ConfigFile = {conffile}")
