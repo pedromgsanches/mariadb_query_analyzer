@@ -76,6 +76,7 @@ def create_dir(dirname):
     try:
         os.mkdir(dirpath)         
     except OSError as e:
+      if "File exists" not in f"{e}":
         logging.error(f"{e}")
 
 
@@ -88,10 +89,9 @@ for dirname in runtimedirs:
 
 ## Test DB Connection
 try:
-    connection = mysql.connector.connect(user=dbuser, password=dbpwd, port=dbport,
-            host=dbhost,
-            database=dbdatabase)
+    connection = mysql.connector.connect(user=dbuser, password=dbpwd, port=dbport, host=dbhost, database=dbdatabase)
     logging.info("DB Connection is OK")
+    connection.close()
 except Error as e:
     logging.error(f"{e}")
     sys.exit()
@@ -101,6 +101,7 @@ for file_name in file_list:
     file_path = os.path.join(sqlpath, file_name)
     if os.path.isfile(file_path):
         with open(file_path, 'r') as sqlfile:
+            connection = mysql.connector.connect(user=dbuser, password=dbpwd, port=dbport, host=dbhost, database=dbdatabase)
             output = open('./output/'+file_name+'.log', "a")
             # Start
             output.write("#############################################################################################################################\n")
@@ -155,11 +156,11 @@ for file_name in file_list:
             except Error as e:
                 output.write(f"Error: {e}\n")
                 logging.error(f"{e}")
-                sys.exit()
+                #sys.exit()
 
             output.close()
             cursor.close()
-
-connection.close()
+            connection.close()
+#connection.close()
 
 logging.info(f'Bye... {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
