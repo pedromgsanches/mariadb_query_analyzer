@@ -62,6 +62,7 @@ except KeyError as e:
 runtimedirs=[sqlpath,f"output/{sqlpath}"]
 #directory_path=sqlpath
 file_list = os.listdir(sqlpath)
+file_list.sort()
 
 ## Functions
 def calc_values(mylist):
