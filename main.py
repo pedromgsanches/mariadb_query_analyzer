@@ -1,21 +1,68 @@
 import mysql
 from mysql.connector import Error
 from tabulate import tabulate
-import sys, os, time, logging
+import os, time, logging
 from datetime import datetime
-import configloader
+#import configloader
+import configparser
 
+# Configure Logging
+logging.basicConfig(level = logging.INFO, filename = 'MariadbSQLAnalyzer.log', filemode = 'a')
+
+## Load configurations
+try:
+    conffile=sys.argv[1]
+    sqlpath=sys.argv[2]
+except IndexError as e:
+    print(f"No arguments given 1-config.ini 2-sqlpath")
+    print(f"{e}")
+    conffile=None
+    sqlpath=None
+
+if conffile:
+    print(f"ConfigFile = {conffile}")
+    logging.info(f"ConfigFile = {conffile}")    
+else:
+    conffile='config.ini'
+    print(f"ConfigFile = {conffile}")
+    logging.info(f"ConfigFile = {conffile}")
+
+if sqlpath:
+    print(f"SQL Path = {sqlpath}")
+    logging.info(f"SQL Path = {sqlpath}")
+else:
+    sqlpath='./sql'
+    print(f"SQL Path = {sqlpath}")
+    logging.info(f"SQL Path = {sqlpath}")
+
+
+# Config Parser
+config = configparser.ConfigParser()
+config.read(conffile)
+
+try:
+    dbhost = str(config['mariadb']['host'])
+    dbport = config['mariadb']['port']
+    dbuser = config['mariadb']['user']
+    dbpwd = config['mariadb']['password']
+    dbdatabase = config['mariadb']['database']
+    testruns = config['execution']['testruns']
+except KeyError as e:
+    logging.error(f"Error loading config file: {e}")
+    sys.exit()
+    
 ## Set vars
-dbhost = configloader.dbhost
-dbport = configloader.dbport
-dbuser = configloader.dbuser
-dbpwd = configloader.dbpwd
-dbdatabase = configloader.dbdatabase
-testruns = configloader.testruns
+#dbhost = configloader.dbhost
+#dbport = configloader.dbport
+#dbuser = configloader.dbuser
+#dbpwd = configloader.dbpwd
+#dbdatabase = configloader.dbdatabase
+#testruns = configloader.testruns
 
-runtimedirs=['sql','output']
-directory_path='./sql'
-file_list = os.listdir(directory_path)
+runtimedirs=[sqlpath,f"output/{sqlpath}"]
+#directory_path=sqlpath
+file_list = os.listdir(sqlpath)
+file_list.sort()
 
 ## Functions
 def calc_values(mylist):
@@ -30,9 +77,9 @@ def create_dir(dirname):
     try:
         os.mkdir(dirpath)         
     except OSError as e:
+      if "File exists" not in f"{e}":
         logging.error(f"{e}")
 
-logging.basicConfig(level = logging.INFO, filename = 'MariadbSQLAnalyzer.log', filemode = 'a')
 
 # Start
 logging.info(f'Session Start: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
@@ -43,19 +90,19 @@ for dirname in runtimedirs:
 
 ## Test DB Connection
 try:
-    connection = mysql.connector.connect(user=dbuser, password=dbpwd, port=dbport,
-            host=dbhost,
-            database=dbdatabase)
+    connection = mysql.connector.connect(user=dbuser, password=dbpwd, port=dbport, host=dbhost, database=dbdatabase)
     logging.info("DB Connection is OK")
+    connection.close()
 except Error as e:
     logging.error(f"{e}")
     sys.exit()
 
 ## Start job
 for file_name in file_list:
-    file_path = os.path.join(directory_path, file_name)
+    file_path = os.path.join(sqlpath, file_name)
     if os.path.isfile(file_path):
         with open(file_path, 'r') as sqlfile:
+            connection = mysql.connector.connect(user=dbuser, password=dbpwd, port=dbport, host=dbhost, database=dbdatabase)
             output = open('./output/'+file_name+'.log', "a")
             # Start
             output.write("#############################################################################################################################\n")
@@ -110,11 +157,10 @@ for file_name in file_list:
             except Error as e:
                 output.write(f"Error: {e}\n")
                 logging.error(f"{e}")
-                sys.exit()
 
             output.close()
             cursor.close()
-
-connection.close()
+            connection.close()
+#connection.close()
 
 logging.info(f'Bye... {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')

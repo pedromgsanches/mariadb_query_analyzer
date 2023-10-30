@@ -1,14 +1,21 @@
-INFO:root:Session Start: 17/10/2023 15:45:42
-INFO:root:DB Connection is OK
-INFO:root:Session Start: 17/10/2023 15:46:34
-INFO:root:DB Connection is OK
+INFO:root:Session Start: 19/10/2023 17:40:38
 ERROR:root:[WinError 183] Cannot create a file when that file already exists: './sql'
 ERROR:root:[WinError 183] Cannot create a file when that file already exists: './output'
-INFO:root:Query Start: 17/10/2023 15:46:34
-INFO:root:Query_File: query1.sql
-INFO:root:-- Current Run: 5
-INFO:root:-- Current Run: 4
-INFO:root:-- Current Run: 3
-INFO:root:-- Current Run: 2
-INFO:root:-- Current Run: 1
-INFO:root:Bye... 17/10/2023 15:46:55
+ERROR:root:2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (10061)
+INFO:root:ConfigFile = config.ini
+INFO:root:SQL Path = sql
+INFO:root:Session Start: 19/10/2023 17:53:41
+ERROR:root:[WinError 183] Cannot create a file when that file already exists: './sql'
+ERROR:root:2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (10061)
+INFO:root:ConfigFile = config.ini
+INFO:root:SQL Path = .\sql\
+INFO:root:Session Start: 19/10/2023 17:54:01
+ERROR:root:[WinError 183] Cannot create a file when that file already exists: './.\\sql\\'
+ERROR:root:[WinError 183] Cannot create a file when that file already exists: './output/.\\sql\\'
+ERROR:root:2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (10061)
+INFO:root:ConfigFile = config.ini
+INFO:root:SQL Path = ./sql
+INFO:root:Session Start: 19/10/2023 17:59:06
+ERROR:root:[WinError 183] Cannot create a file when that file already exists: '././sql'
+ERROR:root:[WinError 183] Cannot create a file when that file already exists: './output/./sql'
+ERROR:root:2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (10061)

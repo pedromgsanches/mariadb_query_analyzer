@@ -1,36 +1,49 @@
 # MariaDB Query Analyzer
 
-## Config
-1. Place SQL files in 'sql' folder
-2. Connection info in config.ini
+## Configurar
+1. Colocar ficheiros com 1 query/ficheiro numa pasta (ex: sql)
+2. Preencher ficheiro de configuração com base no sample.config.ini
 
-## Execute script
-1. Load venv ./Scripts/activate*
-2. Run: python ./main.py
-
-## Compile
-1. compile.bat
-2. files in ./dist
-
-## Required files
-- config.ini
-- sql/*
+## Executar
+1. ./run.sh <config.ini> <./sql>
 
 
-## Output files like:
-```
-############################################################################################################################
-Query Start: 17/10/2023 15:48:09
-Query_File: query1.sql
-Host_Info: ('PSAN-OMX', '10.6.7-MariaDB')
-Test_Runs: 5
-Avg_Rows: 898480 | Max_Rows: 898480 | Min_Rows: 898480
-Avg Exec Time: 2.527729 | Max Exec Time: 2.559655 | Min Exec Time: 2.451204
+## Exemplo de resultado em ./output:
+
+###################################################################################################################
+Query Start: 24/10/2023 18:34:41
+Query_File: query_20231019.sql
+Host_Info: ('lxsigdbc01.sys.sibs.pt', '10.5.16-MariaDB-log')
+Test_Runs: 10
+Avg_Rows: 2 | Max_Rows: 2 | Min_Rows: 2
+Avg Exec Time: 0.155062 | Max Exec Time: 1.478147 | Min Exec Time: 0.007109
 
 Execution Plan:
-     select_type    table    type    possible_keys     key                 ken_len  ref              rows  Extra
- --  -------------  -------  ------  ----------------  ----------------  ---------  -------------  ------  --------------------------------------------
-  1  SIMPLE         o        ALL     ix_order_id                                                   238917  Using where; Using temporary; Using filesort
-  1  SIMPLE         c        ref     ix_customer_id    ix_customer_id            4  tpcc.o.o_c_id      38
-  1  SIMPLE         ol       ref     ix_orderline_oid  ix_orderline_oid          4  tpcc.o.o_id       388
-```
+select_type
+--------------------------------------------------------------------------------
+{
+  "query_block": {
+    "select_id": 1,
+    "r_loops": 1,
+    "r_total_time_ms": 6.692736637,
+    "table": {
+      "table_name": "sr",
+      "access_type": "ref",
+      "possible_keys": [
+        "PRIMARY",
+        "FK_SERVICE_REQUEST_X_TERMINAL",
+        "IDX_TERMINAL_ID_SERVICE_REQUEST_ID"
+      ],
+      "key": "FK_SERVICE_REQUEST_X_TERMINAL",
+      "key_length": "8",
+      "used_key_parts": ["TERMINAL_ID"],
+      "ref": ["const"],
+      "r_loops": 1,
+      "rows": 743,
+      "r_rows": 743,
+      "r_table_time_ms": 2.218263363,
+      "r_other_time_ms": 0.111606306,
+      "filtered": 100,
+      "r_filtered": 100
+    },
+(..)
